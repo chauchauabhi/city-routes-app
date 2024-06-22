@@ -12,14 +12,22 @@ const writeDB = (data) => {
 };
 
 router.post('/route', (req, res) => {
-  const { origin, dest } = req.body;
-  const data = readDB();
-  data.routes.push({ origin, dest });
-  writeDB(data);
-  res.status(201).send({ message: 'Route added' });
+  try{
+    const { origin, dest } = req.body;
+    console.log("About to add source to destination ",origin, dest)
+    const data = readDB();
+    data.routes.push({ origin, dest });
+    writeDB(data);
+    res.status(201).send({ message: 'Route added' });
+  }
+  catch{
+    res.status(201).send({ message: 'Route not added' });
+  }
+  
 });
 
 router.get('/deadendCities', (req, res) => {
+  console.log("deadendCities")
   const data = readDB();
   const outgoingCities = new Set(data.routes.map(route => route.origin));
   const incomingCities = new Set(data.routes.map(route => route.dest));
@@ -28,6 +36,7 @@ router.get('/deadendCities', (req, res) => {
 });
 
 router.get('/routes', (req, res) => {
+  console.log("gettign routes")
   const data = readDB();
   res.status(200).send(data.routes);
 });

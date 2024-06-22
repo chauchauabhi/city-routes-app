@@ -6,6 +6,7 @@ const AddRoute = () => {
   const [dest, setDest] = useState('');
 
   const addRoute = () => {
+    console.log("clicked button")
     axios.post('/api/route', { origin, dest })
       .then(() => {
         setOrigin('');
